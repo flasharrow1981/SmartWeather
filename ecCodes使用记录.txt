@@ -1,0 +1,31 @@
+1. gid = codes_grib_new_from_file(f) 
+    用于获取一个grib片段，获取下一片段时再调用gid = codes_grib_new_from_file(f)即可
+2. iterid = codes_keys_iterator_new(gid, "ls")
+        while codes_keys_iterator_next(iterid):
+                keyname = codes_keys_iterator_get_name(iterid)
+                keyval = codes_get_string(iterid, keyname)
+                print("%s = %s" % (keyname, keyval))
+
+        codes_keys_iterator_delete(iterid)
+    用于获取一个grib片段内的所有key-value对
+
+3.  values = codes_get_values(gid)
+        print('len:%d' %(len(values)))
+        for i in range(len(values)):
+           print("%d %.10e" % (i + 1, values[i]))
+    values中存储了该grib片段中的数据
+4.   points = ((30.21, 120.23), (13, 115))    
+        for lat, lon in points:
+            nearest = codes_grib_find_nearest(gid, lat, lon)[0]
+            print(lat, lon)
+            print(nearest.lat, nearest.lon, nearest.value, nearest.distance,
+                  nearest.index)
+     获取指定坐标点时获取最近的要素（纬度，经度，值，距离，index）
+5.  for key in keys:
+            try:
+                print('  %s: %s' % (key, codes_get(gid, key)))
+    通过key获取value
+
+6.  可用要素：eles=['10U','10V','2D','2T','CP','FAL','LCC','LSP','MSL','PWC','SD','SKT','TP','TCC','D','GH','Q','R','T','U','V','W']
+    根据关联文献得出
+ 
